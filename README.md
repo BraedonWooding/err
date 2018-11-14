@@ -47,7 +47,6 @@ Result parse_bool(char *str, int len) {
     if (!strcmp(str, "true")) return OK(true);
     else if (!strcmp(str, "false")) return OK(false);
     else return ERR(BOOL_INVALID_CHARS);
-    return OK(res);
 }
 
 typedef struct my_val_t {
