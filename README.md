@@ -29,19 +29,20 @@ Result parse_int(char *str, int len) {
     // no changes to your function till...
     int res = 0;
     for (char *c = str; *c != '\0'; c++) {
-        if (*c >= '0' && *c <= '9') {
-            // you need to return, then just 'wrap' your return in ERR(...) or OK(...)
-            if (res >= (__INT_MAX__ - *c - '0')/10) return ERR(INT_ARITHMETIC_OVERFLOW);
-            res *= 10;
-            res += *c - '0';
-        } else {
-            return ERR(INT_INVALID_CHAR);
-        }
+        // guard auto returns is the same as
+        // if (!(*c >= '0' && *c <= '9')) return ERR(INT_INVALID_CHAR);
+        GUARD(*c >= '0' && *c <= '9', INT_INVALID_CHAR);
+        GUARD(res < (__INT_MAX__ - *c - '0')/10, INT_ARITHMETIC_OVERFLOW);
+        res *= 10;
+        res += *c - '0';
     }
     return OK(res);
 }
 
 Result parse_bool(char *str, int len) {
+    /*
+        Perhaps a nicer string matching library here could help mhmmmm.
+    */
     bool res = 0;
     if (!strcmp(str, "true")) return OK(true);
     else if (!strcmp(str, "false")) return OK(false);
@@ -60,7 +61,7 @@ ERR_ENUM(oom, OutOfMemory);
 // You can see how it can be quite useful!
 Result get_myval(int x, int y, double z) {
     MyVal out = malloc(sizeof(struct my_val_t));
-    if (out == NULL) return ERR(OutOfMemory);
+    GUARD(out != NULL, OutOfMemory);
     out->x = x;
     out->y = y;
     out->z = z;
