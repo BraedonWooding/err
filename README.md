@@ -4,6 +4,8 @@ Just a nice small error handling library in C.  Highly based off the rust result
 
 > Note: is not strictly C11 and utilises extensions, only works on gcc and clang.
 
+> You just need `err.h`.
+
 ## Example
 
 ```c

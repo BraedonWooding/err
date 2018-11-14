@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "*.lex": "lex",
-        "*.y": "lex",
-        "err.h": "c"
-    }
-}
