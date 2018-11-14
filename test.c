@@ -11,7 +11,7 @@ ERR_ENUM(parse_int_error, INT_INVALID_CHAR, INT_ARITHMETIC_OVERFLOW)
 ERR_ENUM(parse_bool_error, BOOL_INVALID_CHARS)
 
 Result parse_int(char *str, int len) {
-    int res = 0;
+    long res = 0;
     for (char *c = str; *c != '\0'; c++) {
         if (*c >= '0' && *c <= '9') {
             if (res >= (__INT_MAX__ - *c - '0')/10) return ERR(INT_ARITHMETIC_OVERFLOW);
@@ -42,15 +42,19 @@ ERR_ENUM(oom, OutOfMemory);
 
 Result get_myval(int x, int y, double z) {
     MyVal out = malloc(sizeof(struct my_val_t));
-    if (out == NULL) return ERR(OutOfMemory);
+    GUARD(out != NULL, OutOfMemory);
     out->x = x;
     out->y = y;
     out->z = z;
     return OK(out);
 }
 
+Result get_float(float x) {
+    return OK(x);
+}
+
 Result try_example(char *str, int len) {
-    TRY(parse_int(str, len), int, out);
+    int out = TRY(parse_int(str, len), int);
     return OK(out);
 }
 
@@ -85,9 +89,11 @@ int main(int argc, char *argv[]) {
     printf("True is %d (which is true)\n", UNWRAP(y, bool));
 
     // you can also just skip the 'business' of grabbing the result and just get the value
-    MyVal val = UNWRAP(get_myval(1, 2, 5.0), MyVal);
+    MyVal val = UNWRAP(get_myval(1, 2, 5.983383838), MyVal);
     printf("MyVal: x: %d, y: %d, z: %lf\n", val->x, val->y, val->z);
 
     int k = UNWRAP(try_example(argv[1], strlen(argv[1])), int);
     printf("Try is still %d\n", k);
+
+    printf("FLT: %f\n", UNWRAP(get_float(5.39), float));
 }
