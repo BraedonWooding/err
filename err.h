@@ -22,6 +22,9 @@
     SOFTWARE.
 */
 
+#ifndef BWW_ERR_H
+#define BWW_ERR_H
+
 /*
     Even though compilers can make this smaller we want multiple error types
     to work together reasonably well so we need this!
@@ -173,3 +176,4 @@ typedef struct _result_t {
         return UNWRAP(res, int);            \
     }                                       \
     Result name(int argc, char *argv[])
+#endif
