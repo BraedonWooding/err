@@ -86,11 +86,12 @@ int main(int argc, char *argv[]) {
     }
 
     // you can also use this shorter way
-    IF_LET(x, int, out_int) {
-        printf("Same result: %d\n", out_int);
+    // note: you pass in the block into IF_LET so it can scope it properly
+    IF_LET(x, int, {
+        printf("Same result: %d\n", out);
     } else {
         printf("Still error: %s\n", parse_int_error_to_string(x.error));
-    }
+    })
 
     // works with other stuff too
     // like this boolean
@@ -159,7 +160,6 @@ There is also one called `WRAP_MAIN_ENVP` incase you want the non-portable `envp
 
 - Typesafety is the biggest concern, since there are no ways for typesafety to be properly implemented in C there is nothing stopping you from converting the result to any type you want!
   - In actual fact this really isn't that much of a concern if UNIQUE_ERRORS is enabled since 
-- Slight 'note' IF_LET does leak it's variable outside it's scope (only way to implement such as to look like an if statement), shouldn't really be a concern and you can always do `{ IF_LET(cond, int, out) { /* ... */ } }` if you need to remove the scoping.
 - Run on MSVC; it only supports clang and gcc
 
 ## How it is implemented

@@ -77,11 +77,11 @@ int main(int argc, char *argv[]) {
     }
 
     // you can also use this shorter way
-    IF_LET(x, int, out_int) {
-        printf("Same result: %d\n", out_int);
+    IF_LET(x, int, {
+        printf("Same result: %d\n", out);
     } else {
         printf("Still error: %s\n", parse_int_error_to_string(x.error));
-    }
+    })
 
     // works with other stuff too
     // like this boolean

@@ -29,7 +29,8 @@
 #define ERR_SIZE int
 
 /*
-    Comment out this so each error doesn't get a unique number
+    Comment out this out if you want each error to not get a unique ID
+    This will mean that errors are suitable together.
 */
 #define UNIQUE_ERRORS
 
@@ -138,7 +139,8 @@ typedef struct _result_t {
 
 #define UNWRAP(x, type) ({ Result __result = x; *((type*)&__result.ok); })
 
-#define IF_LET(x, type, out) type out = UNWRAP(x, type); if (IS_OK(x))
+#define IF_LET(x, type, block) \
+    { type out = UNWRAP(x, type); if (IS_OK(x)) block }
 
 #define TRY(res, type) ({                               \
     Result result = res;                                \
