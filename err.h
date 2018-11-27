@@ -115,7 +115,7 @@ typedef struct _result_t {
     }
 
 #define ERR_ENUM_GROUP(name, ...)                       \
-    char * name (int err) {                             \
+    static inline char * name (int err) {               \
         if (0) { }                                      \
         FOR_EACH(GENERIC_ERR_HANDLER, __VA_ARGS__)      \
         else {                                          \
@@ -125,7 +125,7 @@ typedef struct _result_t {
 
 #define ERR_ENUM(name, ...) \
     typedef enum _##name##_t { ENUM_CASE(name##_begins) FOR_EACH(ENUM_CASE, __VA_ARGS__) ENUM_CASE(name##_ends) } name; \
-    ERR_ENUM_GET_NAME(name,__VA_ARGS__)
+    static inline ERR_ENUM_GET_NAME(name,__VA_ARGS__)
 
 #define ERR(err) (Result){ .error = err, .variant = ERROR }
 
