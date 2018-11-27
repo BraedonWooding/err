@@ -6,6 +6,14 @@ Just a nice small error handling library in C.  Highly based off the rust result
 
 > You just need `err.h`.
 
+## Install
+
+```bash
+wget https://raw.githubusercontent.com/BraedonWooding/err/master/err.h
+```
+
+You can also install it to your install directory if you want.
+
 ## Example
 
 ```c
